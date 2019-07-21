@@ -8,6 +8,31 @@
 extern "C" {
 #endif
 
+jdoubleArray toDoubleArray(JNIEnv *env, std::vector<double> param) {
+    jdoubleArray array = env->NewDoubleArray(param.size());
+    env->SetDoubleArrayRegion( array, 0, param.size(), ( jdouble * ) &param[0] );
+    return array;
+}
+
+jobjectArray toDoubleMatrix(JNIEnv *env, std::vector<std::vector<double>> param) {
+    jint size = param.size();
+    jclass doubleArray1DClass = env->FindClass("[D");
+    jobjectArray result = env->NewObjectArray(size, doubleArray1DClass, NULL);
+    for(int i = 0; i < size; i++){
+        jdoubleArray array = env->NewDoubleArray(param[i].size());
+        env->SetDoubleArrayRegion(array, 0, param.size(), ( jdouble * ) &param[0]);
+        env->SetObjectArrayElement(result, i, array);
+    }
+    return result;
+}
+
+std::vector<double> toStdVector(JNIEnv *env, jdoubleArray param) {
+    jsize size = env->GetArrayLength(param);
+    std::vector<double> input(size);
+    env->GetDoubleArrayRegion(param, 0, size, &input[0] );
+    return input;
+}
+
 /*METHODS*/
 
 #ifdef __cplusplus

@@ -714,7 +714,9 @@ var AndroidManager = function(context, platformInfo, cppDir, classDefine, header
             'double': 'jdouble',
             'string': 'jstring',
             'boolean': 'jboolean',
-            'void': 'void'
+            'void': 'void',
+            'doubleVector': 'jdoubleArray',
+            'doubleMatrix': 'jobjectArray'
         }[type];
     }
 
@@ -728,7 +730,9 @@ var AndroidManager = function(context, platformInfo, cppDir, classDefine, header
             'int': 'int',
             'double': 'double',
             'string': 'const char*',
-            'boolean': 'bool'
+            'boolean': 'bool',
+            'doubleVector': 'std::vector<double>',
+            'doubleMatrix': 'std::vector<std::vector<double>>'
         }[type];
     }
 
@@ -741,7 +745,9 @@ var AndroidManager = function(context, platformInfo, cppDir, classDefine, header
             'double': 'double',
             'string': 'String',
             'boolean': 'boolean',
-            'void': 'void'
+            'void': 'void',
+            'doubleVector': 'JSONArray',
+            'doubleMatrix': 'JSONArray'
         }[type];
     }
 
@@ -755,7 +761,8 @@ var AndroidManager = function(context, platformInfo, cppDir, classDefine, header
             'int': '(int)' + varName,
             'double': '(double)' + varName,
             'string': 'native_' + varName,
-            'boolean': '(bool)' + varName
+            'boolean': '(bool)' + varName,
+            'doubleVector': 'toStdVector(env, ' + varName +')'
         }[type];
     }
 
@@ -768,7 +775,9 @@ var AndroidManager = function(context, platformInfo, cppDir, classDefine, header
             'int': '(jint)' + varName,
             'double': '(jdouble)' + varName,
             'string': 'env->NewStringUTF(' + varName + ');',
-            'boolean': '(jboolean)' + varName
+            'boolean': '(jboolean)' + varName,
+            'doubleVector': 'toDoubleArray(env, ' + varName + ')',
+            'doubleMatrix': 'toDoubleMatrix(env, ' + varName + ')'
         }[type];
     }
 
@@ -781,7 +790,8 @@ var AndroidManager = function(context, platformInfo, cppDir, classDefine, header
             'int': 'data.getInt(' + i + ')',
             'double': 'data.getDouble(' + i + ')',
             'string': 'data.getString(' + i + ')',
-            'boolean': 'data.getBoolean(' + i + ')'
+            'boolean': 'data.getBoolean(' + i + ')',
+            'doubleVector': 'data.getJSONArray(' + i + ')'
         }[type];
     }
 }

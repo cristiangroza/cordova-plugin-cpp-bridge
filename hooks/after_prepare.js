@@ -671,6 +671,8 @@ var AndroidManager = function(context, platformInfo, cppDir, classDefine, header
             receiveReturn = getType_java(methodElement.return) + ' ret = ';
             if (methodElement.return == 'double') {
                 methodReturn =  ', new JSONObject("{ret:" + ret + "}")';
+            } else if(methodElement.return == 'doubleMatrix'){
+                methodReturn =  ', mapToJsonArray(ret)';
             } else {
                 methodReturn = ', ret';
             }
@@ -746,8 +748,8 @@ var AndroidManager = function(context, platformInfo, cppDir, classDefine, header
             'string': 'String',
             'boolean': 'boolean',
             'void': 'void',
-            'doubleVector': 'JSONArray',
-            'doubleMatrix': 'JSONArray'
+            'doubleVector': 'double[]',
+            'doubleMatrix': 'double[][]'
         }[type];
     }
 
@@ -791,7 +793,7 @@ var AndroidManager = function(context, platformInfo, cppDir, classDefine, header
             'double': 'data.getDouble(' + i + ')',
             'string': 'data.getString(' + i + ')',
             'boolean': 'data.getBoolean(' + i + ')',
-            'doubleVector': 'data.getJSONArray(' + i + ')'
+            'doubleVector': 'mapToDoubleArray(data.getJSONArray(' + i + '))'
         }[type];
     }
 }

@@ -20,8 +20,9 @@ jobjectArray toDoubleMatrix(JNIEnv *env, std::vector<std::vector<double>> param)
     jobjectArray result = env->NewObjectArray(size, doubleArray1DClass, NULL);
     for(int i = 0; i < size; i++){
         jdoubleArray array = env->NewDoubleArray(param[i].size());
-        env->SetDoubleArrayRegion(array, 0, param.size(), ( jdouble * ) &param[0]);
-        env->SetObjectArrayElement(result, i, array);
+        env->SetDoubleArrayRegion(array, (jsize) 0, (jsize) param[i].size(), ( jdouble * ) param[i].data());
+        env->SetObjectArrayElement(result, (jsize) i, array);
+        env->DeleteLocalRef(array);
     }
     return result;
 }
